@@ -1,6 +1,49 @@
-import React from 'react'
+import React, {  useState } from 'react'
+import { Link , useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 const SignUp = () => {
+
+
+
+    const [name, setName]= useState('')
+    const [email, setEmail]= useState('')
+    const [password, setPassword]= useState('')
+    const navigate= useNavigate()
+
+
+    const handleSubmit =(e)=>{
+      e.preventDefault()
+      axios.post('http://localhost:3001/register',{name,email,password})
+      .then((res)=>{
+        
+        if(res.data==="User already existed"){
+          console.log(res.data);
+          
+          alert(res.data)
+        }
+        else if(res.data==="All fields are  required"){
+          alert(res.data)
+        }
+        else{
+          console.log(result.data);
+          
+          navigate('/login')
+        }
+        
+        
+
+      })
+      .catch((err)=>{
+        console.log(err);
+        
+      })
+      
+    }
+
+
+    
+
   return (
     <div className='h-screen w-full bg-gray-950 flex items-center justify-center text-shadow-slate-50 '>
       
@@ -11,15 +54,27 @@ const SignUp = () => {
                 <h1 className='text-white font-bold text-3xl py-1'>Welcome</h1>
             </div>
 
-            <div className='flex gap-6 w-full'>
+
+            <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
+              <div className='flex gap-6 w-full'>
               <label htmlFor="Fname" className='text-lg w-1/3'>
                 Full Name:
               </label>
 
-              <input type="text"  placeholder='Enter Your Name' className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
+              <input
+               type="text"  
+               placeholder='Enter Your Name' 
+               id='Fname'
+               className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
                focus:border-blue-500 focus:outline-none
                transition-all duration-300
-               placeholder-gray-400"/>
+               placeholder-gray-400"
+               value={name}
+               onChange={(e)=>{
+                setName(e.target.value)
+               }}
+               />
+
             </div>
 
 
@@ -28,10 +83,20 @@ const SignUp = () => {
                 Email:
               </label>
 
-              <input type="email" id='email' name='email'  placeholder='Enter Your Email' className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
+              <input 
+              type="email" 
+              id='email' 
+              name='email'  
+              placeholder='Enter Your Email' 
+              className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
                focus:border-blue-500 focus:outline-none
                transition-all duration-300
-               placeholder-gray-400"/>
+               placeholder-gray-400"
+               value={email}
+               onChange={(e)=>{
+                setEmail(e.target.value)
+               }}
+               />
             </div>
 
 
@@ -40,10 +105,20 @@ const SignUp = () => {
                 Password:
               </label>
 
-              <input type="Password" id='Password' name='Password'  placeholder='Enter Your Password' className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
+              <input 
+              type="Password" 
+              id='Password' 
+              name='Password'  
+              placeholder='Enter Your Password' 
+              className="w-2/3 border-b-3 border-white  px-2 py-2 rounded-md 
                focus:border-blue-500 focus:outline-none
                transition-all duration-300
-               placeholder-gray-400"/>
+               placeholder-gray-400"
+               value={password}
+               onChange={(e)=>{
+                setPassword(e.target.value)
+               }}
+               />
             </div>
 
             <div className='w-full flex justify-center'>
@@ -57,9 +132,12 @@ const SignUp = () => {
               Sign up
               </button>
             </div>
+            </form>
+
+            
 
             <p className='text-center text-gray-400 text-sm mt-6'>
-              Alread Registered? <a href="#" className='text-cyan-400 hover:underline'>sign in</a>
+              Alread Registered?  <Link to='/login' className='text-cyan-400 hover:underline'>sign in</Link>
             </p>
 
         </div>

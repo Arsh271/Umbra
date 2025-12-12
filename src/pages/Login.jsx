@@ -1,13 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
+
+
+
+  const [email, setEmail]= useState('')
+  const [password, setPassword]= useState('')
+  const navigate = useNavigate('')
+
+  const handleSubmit= (e)=>{
+    e.preventDefault()
+    axios.post('http://localhost:3001/login',{email,password})
+    .then((res)=>{
+      console.log(res)
+      if(res.data==="Success"){
+        // alert(res.data)
+        navigate('/home')
+      }
+      else if(res.data==="INCORRECT PASSWORD"){
+        alert(res.data)
+      }
+      else if(res.data==="NO record existed"){
+        alert(res.data)
+      }
+      
+    })
+    .catch((err)=>{
+      console.log(err);
+      
+    })
+  }
+
+
+
   return (
     <div className=' h-screen w-full bg-gray-950 flex items-center justify-center text-shadow-slate-50'>
 
+
+
+       
+
         <div className='bg-gray-800 w-100 h-112 rounded-xl shadow-xl hover:shadow-[0_0_25px_rgba(56,140,248,1)]'>
           
-          <form >
+          <form onSubmit={handleSubmit}>
            
 
 
@@ -30,6 +68,10 @@ const Login = () => {
                focus:border-blue-500 focus:outline-none
                transition-all duration-300
                placeholder-gray-400"
+    value={email}
+    onChange={(e)=>{
+      setEmail(e.target.value)
+    }}
   />
 </div>
 
@@ -53,6 +95,10 @@ const Login = () => {
                focus:border-blue-500 focus:outline-none
                transition-all duration-300
                placeholder-gray-400"
+    value={password}
+    onChange={(e)=>{
+      setPassword(e.target.value)
+    }}
   />
 </div>
 
@@ -88,7 +134,7 @@ const Login = () => {
             
 
             <p className='text-center text-gray-400 text-sm mt-6'>
-              Don't have an account? <a href="#" className='text-cyan-400 hover:underline'>sign up</a>
+              Don't have an account?  <Link to='/register' className='text-cyan-400 hover:underline'>sign up</Link>
             </p>
 
         </div>
