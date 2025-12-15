@@ -15,16 +15,15 @@ const Login = () => {
     e.preventDefault()
     axios.post('http://localhost:3001/login',{email,password})
     .then((res)=>{
-      console.log(res)
-      if(res.data==="Success"){
+      console.log(res.data.status)
+      if(res.data.status==="Success"){
         // alert(res.data)
+        console.log(res.data.username);
+        localStorage.setItem("username",res.data.username)
         navigate('/home')
       }
-      else if(res.data==="INCORRECT PASSWORD"){
-        alert(res.data)
-      }
-      else if(res.data==="NO record existed"){
-        alert(res.data)
+      else if(res.data.status==="Error"){
+        alert(res.data.message)
       }
       
     })

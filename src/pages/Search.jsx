@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar2 from "../components/Navbar2";
+import { encryptText, decryptText } from "../utils/crypto";
 
 const Search = () => {
 
@@ -8,40 +9,72 @@ const Search = () => {
     const [text ,setText] = useState('')
     const [search ,setSearch]= useState('')
     const [action , setAction]= useState('')
+    const createdBy =localStorage.getItem("username")
+    const [password, setPassword] = useState('');
 
-    const handleSubmit =(e)=>{
+
+    const handleSubmit =async(e)=>{
         e.preventDefault();
         console.log(e.target);
-        axios.post('http://localhost:3001/update',{search,heading,text,action})
-        .then((res)=>{
-            alert(res.data)
-        }
 
-        )
-        .catch((err)=>{
-            console.log(err);
-        })
+        if (!createdBy) {
+      alert("User not logged in");
+      return;
+      }
+
+        if(action==="update"){
+          if(!password){
+            alert("Encryption password is required")
+            return;
+          }
+          try{
+            const encryptedText = await encryptText(text,password);
+            const res = await axios.post('http://localhost:3001/update',{search,heading,encryptedText,action,createdBy});
+             alert(res.data)
+          }
+          catch(err){
+            console.error(err);
+            alert("Update failed");
+            
+          }
+        }
+        
+        else if(action==="delete"){
+          const res = await axios.post("http://localhost:3001/update",{search,action,createdBy});
+          alert(res.data);
+        }
         
     }
 
 
-    const handleSearch=(e)=>{
+    const handleSearch=async (e)=>{
         e.preventDefault();
-        axios.post('http://localhost:3001/search',{search})
-        .then((res)=>{
+
+        if(!password){
+          alert("Encryption password is required");
+          return ;
+        }
+        try{
+          const res = await axios.post('http://localhost:3001/search',{search,createdBy})
+        ;
+        
+        
             if(res.data==="No such note exist"){
                 alert(res.data)
             }
             else{
-                 console.log(res.data.existingHeading.text);
-            setText(res.data.existingHeading.text)
-            setHeading(res.data.existingHeading.heading)
-            }       
-        })
-        .catch((err)=>{
-            console.log(err);
+                 
             
-        })
+            const encryptedText=  res.data.existingHeading.encryptedText
+            const decryptedText = await decryptText(encryptedText,password)
+            setText(decryptedText)
+            setHeading(res.data.existingHeading.heading)
+            } }      
+        
+        catch(err){
+          console.error(err);
+          alert("Wrong password or corrupted data")
+        }
     }
 
   return (
@@ -73,6 +106,27 @@ const Search = () => {
             Search
           </button>
         </form>
+
+        <div className="w-full bg-gray-900 p-4 rounded-xl border border-gray-800 mt-6">
+  <label className="block mb-2 font-medium">
+    🔐 Encryption Password
+  </label>
+
+  <input
+    type="password"
+    className="w-full bg-gray-800 border border-gray-700 px-3 py-2 rounded-md 
+               focus:outline-none focus:border-blue-500"
+    placeholder="Enter encryption password to read note"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+
+  <p className="text-xs text-gray-400 mt-1">
+    Used to decrypt the note locally
+  </p>
+</div>
+
 
      
         <form onSubmit={handleSubmit} className="flex flex-col items-center mt-10 gap-6">
