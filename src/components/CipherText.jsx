@@ -2,9 +2,9 @@ import React from 'react'
 
 const CipherText = () => {
   return (
-    <div className='bg-slate-800 h-14/45 w-1/2 px-4 text-white border-l-4 border-8 border-slate-400'>
+    <div className='bg-gradient-to-br  from-slate-700 to-slate-800 rounded-xl  w-1/2 p-5 border border-slate-500 shadow-lg flex flex-col gap-3'>
        <div>
-        <h1 className='pb-2 border-b border-white/40 text-center text-xl font-bold' >Ciphertext</h1>
+        <h1 className='pb-2 border-b border-white/20 text-center tracking-wide text-lg font-semibold' >Ciphertext</h1>
       </div>
     </div>
   )
