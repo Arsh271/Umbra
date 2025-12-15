@@ -6,7 +6,7 @@ import CipherText from './components/CipherText'
 
 const App = () => {
   return (
-    <div className='h-screen w-full overflow-hidden'>
+    <div className="min-h-screen w-full bg-gray-950 text-white">
 
       <Navbar />
       
