@@ -19,6 +19,7 @@ const Login = () => {
       if(res.data.status==="Success"){
         // alert(res.data)
         console.log(res.data.username);
+        localStorage.setItem("token",res.data.token)
         localStorage.setItem("username",res.data.username)
         navigate('/home')
       }

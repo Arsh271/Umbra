@@ -17,17 +17,12 @@ const SignUp = () => {
       axios.post('http://localhost:3001/register',{name,email,password})
       .then((res)=>{
         
-        if(res.data==="User already existed"){
-          console.log(res.data);
-          
-          alert(res.data)
-        }
-        else if(res.data==="All fields are  required"){
-          alert(res.data)
+        if(res.data.status==="Error"){
+          alert(res.data.message)
         }
         else{
-          console.log(result.data);
-          
+          console.log(res.data);
+          alert(res.data.message)
           navigate('/login')
         }
         

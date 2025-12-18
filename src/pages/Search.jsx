@@ -10,6 +10,7 @@ const Search = () => {
     const [search ,setSearch]= useState('')
     const [action , setAction]= useState('')
     const createdBy =localStorage.getItem("username")
+    const token = localStorage.getItem("token")
     const [password, setPassword] = useState('');
 
 
@@ -17,7 +18,7 @@ const Search = () => {
         e.preventDefault();
         console.log(e.target);
 
-        if (!createdBy) {
+        if (!token) {
       alert("User not logged in");
       return;
       }
@@ -29,7 +30,11 @@ const Search = () => {
           }
           try{
             const encryptedText = await encryptText(text,password);
-            const res = await axios.post('http://localhost:3001/update',{search,heading,encryptedText,action,createdBy});
+            const res = await axios.post('http://localhost:3001/update',{search,heading,encryptedText,action,createdBy},{
+              headers:{
+                Authorization: `Bearer ${token}`
+              }
+            });
              alert(res.data)
           }
           catch(err){
@@ -40,7 +45,11 @@ const Search = () => {
         }
         
         else if(action==="delete"){
-          const res = await axios.post("http://localhost:3001/update",{search,action,createdBy});
+          const res = await axios.post("http://localhost:3001/update",{search,action,createdBy},{
+            headers:{
+              Authorization: `Bearer ${token}`
+            }
+          });
           alert(res.data);
         }
         
@@ -55,7 +64,11 @@ const Search = () => {
           return ;
         }
         try{
-          const res = await axios.post('http://localhost:3001/search',{search,createdBy})
+          const res = await axios.post('http://localhost:3001/search',{search,createdBy},{
+            headers:{
+              Authorization: `Bearer ${token}`
+            }
+          })
         ;
         
         

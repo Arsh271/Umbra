@@ -6,6 +6,7 @@ import { encryptText } from '../utils/crypto'
 const Card = () => {
 
   const createdBy =localStorage.getItem("username")
+  const token = localStorage.getItem("token");
   const [text ,setText] = useState('')
   const [heading ,setHeading] = useState('')
   const [password, setPassword] = useState('');
@@ -14,7 +15,7 @@ const Card = () => {
   const handleSubmit= async (e)=>{
     e.preventDefault();
 
-    if (!createdBy) {
+    if (!token) {
     alert("User not logged in");
     return;
     }
@@ -27,17 +28,19 @@ const Card = () => {
     try{
       const encryptedText = await encryptText(text,password);
 
-      const res =await axios.post('http://localhost:3001/home',{heading,encryptedText,createdBy});
+      const res =await axios.post('http://localhost:3001/home',{heading,encryptedText,createdBy},{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      });
       
       console.log(res.data);
-      if(res.data==="Title already exist..."){
-        console.log(res.data);
-        alert(res.data)
+
+      if(res.data.status==="Error"){
+        alert(res.data.message)
       }
-      else if(res.data==="Title is required"){
-        console.log(res.data);
-        alert(res.data)
-      }
+      
+      
       setHeading("")
       setText("")
       setPassword("")
