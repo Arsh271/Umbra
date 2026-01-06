@@ -9,11 +9,11 @@ const verifyToken = (req,res, next)=>{
     }
 
     try{
-        const decoded = jwt.verify(token,"secretkey");
+        const decoded = jwt.verify(token,process.env.JWT_SECRET);
         req.user = decoded;
         next();
     }catch(err){
-        res.json({status:"Error",message:"invalid token "})
+        res.json({status:"Error",message:err.message})
     }
 
 }

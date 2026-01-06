@@ -5,7 +5,7 @@ import { encryptText } from '../utils/crypto'
 import { generateNoteKey, encryptWithPublicKey } from '../utils/cryptoKeys'
 // import { useNotification } from '../context/NotificationContext'
 const Card = () => {
-  const { showNotification } = useNotification();
+  // const { showNotification } = useNotification();
 
   // const createdBy =localStorage.getItem("username")
   const token = localStorage.getItem("token");
