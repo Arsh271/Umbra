@@ -29,7 +29,7 @@ const OTPVerify = () => {
 
 
 return (
-  <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center">
+  <div className="min-h-screen w-full bg-linear-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center">
 
     <div className="bg-gray-900/70 backdrop-blur-xl w-[420px] rounded-2xl shadow-xl border border-gray-800 p-8 flex flex-col gap-8">
 
@@ -69,7 +69,7 @@ return (
 
         <button
           type="submit"
-          className="mt-4 w-full bg-gradient-to-r from-blue-500 to-indigo-500 
+          className="mt-4 w-full bg-linear-to-r from-blue-500 to-indigo-500 
                      text-white font-semibold py-2 rounded-lg
                      hover:from-blue-600 hover:to-indigo-600
                      active:scale-95 transition

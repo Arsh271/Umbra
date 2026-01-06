@@ -3,7 +3,7 @@ import Preview from './Preview'
 import axios from 'axios'
 import { encryptText } from '../utils/crypto'
 import { generateNoteKey, encryptWithPublicKey } from '../utils/cryptoKeys'
-import { useNotification } from '../context/NotificationContext'
+// import { useNotification } from '../context/NotificationContext'
 const Card = () => {
   const { showNotification } = useNotification();
 
@@ -17,12 +17,14 @@ const Card = () => {
     e.preventDefault();
 
     if (!heading || !text) {
-      showNotification("Title and text are required", "info");
+      // showNotification("Title and text are required", "info");
+      alert("Title and text both are required !!");
       return;
     }
 
     if (!token) {
-      showNotification("User not logged in", "error");
+      // showNotification("User not logged in", "error");
+      alert("User not logged in !!")
       return;
     }
 
@@ -37,12 +39,13 @@ const Card = () => {
       });
 
       if (keyRes.data.status !== "Success") {
-        return showNotification(keyRes.data.message, "error")
+        return alert(keyRes.data.message);
       }
 
       const publicKey = keyRes.data.publicKey;
       if (!publicKey) {
-        showNotification("please log out and login again !!", "error")
+        // showNotification("please log out and login again !!", "error")
+        alert("please log out and log in again !!");
       }
 
       const encryptedKey = await encryptWithPublicKey(publicKey, noteKey)
@@ -57,11 +60,12 @@ const Card = () => {
       console.log(res.data);
 
       if (res.data.status === "Error") {
-        showNotification(res.data.message, "error")
+        alert(res.data.message);
         return;
       }
 
-      showNotification("Note created successfully!", "success")
+      // showNotification("Note created successfully!", "success")
+      alert("Note created successfully!");
 
 
       setHeading("")
@@ -70,7 +74,8 @@ const Card = () => {
 
     } catch (error) {
       console.log(error);
-      showNotification("Encryption or saving failed", "error")
+      // showNotification("Encryption or saving failed", "error")
+      alert("encryption or saving failed !");
     }
 
   }

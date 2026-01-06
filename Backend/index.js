@@ -21,7 +21,7 @@ app.use(express.json())
 
 app.use(cors())
 
-mongoose.connect("mongodb://127.0.0.1:27017/Umbra");
+mongoose.connect(process.env.MONGO_URI);
 
 app.post('/login', async (req,res)=>{
     const {email,password} = req.body;
@@ -35,11 +35,11 @@ app.post('/login', async (req,res)=>{
 
                  const token = jwt.sign(
                     {id: user._id},
-                    "secretkey",
-                    {expiresIn: "1h"}
+                    process.env.JWT_SECRET,
+                    {expiresIn: process.env.JWT_EXPIRES_IN }
                 );
 
-                res.json({status:"Success",token, username:user.name})
+                res.json({status:"Success",token, username:user.name,message:"Successfully logged in"})
 
                
 
@@ -57,28 +57,38 @@ app.post('/login', async (req,res)=>{
 app.post('/register',async (req,res)=>{
 
     const {name, email ,password} = req.body;
-    const hashedPassword =  await bcrypt.hash(password,10)
-    const user = await User.findOne({email: email})
+    
+    
 
     if(name===""||email===""||password===""){
        return res.json({status:"Error",message:"All fields are  required"});
     }
+    const user = await User.findOne({email: email})
 
-    else if(user){
+     if(user&&user.isVerified==="true"){
         return res.json({status:"Error",message:"User already existed"})
     }
-   
+
+    const hashedPassword =  await bcrypt.hash(password,10);
     const otp = Math.floor(100000 + Math.random()*900000).toString();
     
     const hashedOtp= await bcrypt.hash(otp,10);
         
+    if(user){
+        user.name=name;
+        user.password=hashedPassword;
+        user.otp=hashedOtp;
+        otpExpires=Date.now + process.env.OTP_EXPIRY_MINUTES*60*1000;
+        await user.save();
+
+    }else{
         await User.create({
             name,
             email,
             password: hashedPassword,
             otp: hashedOtp,
-            otpExpires: Date.now() +5*60*1000
-        })
+            otpExpires: Date.now() +process.env.OTP_EXPIRY_MINUTES*60*1000
+        })}
        
     
     try {
@@ -127,7 +137,7 @@ app.post('/verify', async (req,res)=>{
     user.otpExpires=null;
     await user.save()
 
-    res.json({status:"Success", message:"Email verified"})
+    res.json({status:"Success", message:"Email verified, now you can login !!"})
 })
 
 

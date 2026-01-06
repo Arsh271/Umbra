@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { generateKeyPair, exportKey } from '../utils/cryptoKeys';
-import { useNotification } from '../context/NotificationContext';
+// import { useNotification } from '../context/NotificationContext';
 
 const Login = () => {
 
@@ -20,8 +20,8 @@ const Login = () => {
       const res = await axios.post('http://localhost:3001/login', { email, password })
       console.log(res.data.status)
       if (res.data.status === "Success") {
-        // alert(res.data)
-        showNotification("Login Successful!", "success")
+        alert(res.data.message)
+        // showNotification("Login Successful!", "success")
         console.log(res.data.username);
         localStorage.setItem("token", res.data.token)
         localStorage.setItem("username", res.data.username)
@@ -45,12 +45,14 @@ const Login = () => {
         navigate('/home')
       }
       else if (res.data.status === "Error") {
-        showNotification(res.data.message, "error")
+        // showNotification(res.data.message, "error")
+        alert(res.data.message)
       }
 
     } catch (err) {
       console.log(err);
-      showNotification("Login failed. Check credentials or network.", "error");
+      // showNotification("Login failed. Check credentials or network.", "error");
+      alert("Login failed. Check credentials or network.")
     }
   }
 
