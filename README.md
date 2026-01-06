@@ -88,6 +88,10 @@ PORT=3001
 3. View your notes - decryption also happens locally.
 4. Share notes with other users and assign read or edit permissions.
 
+## DEMO VIDEO
+
+- Video Link: https://drive.google.com/drive/folders/1dC0erGfrt4_Fo4C-Hol3LJcpr16KXS4s?usp=sharing
+
 ## AI Disclosure
 
 - ChatGPT (for explanations, suggestions, and debugging assistance)
