@@ -56,7 +56,7 @@ These features ensure confidentiality, integrity, and controlled access.
 
 ## 5. AI Tools Used
 
-- ChatGPT (for explanations, suggestions, and debugging assistance)
+- ChatGPT (for explanations, suggestions, debugging assistance and some UI enhancement);
 - AntiGravity (for enhancing notification experience )
 
 No AI tool generated production code directly.

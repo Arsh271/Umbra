@@ -94,7 +94,7 @@ PORT=3001
 
 ## AI Disclosure
 
-- ChatGPT (for explanations, suggestions, and debugging assistance)
+- ChatGPT (for explanations, suggestions, debugging assistance and some UI enhancement);
 - AntiGravity (for enhancing notification experience )
 
 
